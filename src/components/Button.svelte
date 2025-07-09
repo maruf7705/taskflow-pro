@@ -6,7 +6,7 @@
 
 <button
   on:click={onClick}
-  class="w-full px-4 py-2 font-bold text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-opacity-50"
+  class="w-full px-4 py-2 font-bold text-white rounded-lg shadow-md transition-transform transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-opacity-75"
   class:bg-blue-500={primary}
   class:hover:bg-blue-600={primary}
   class:focus:ring-blue-400={primary}

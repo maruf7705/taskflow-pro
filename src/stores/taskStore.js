@@ -5,6 +5,10 @@ const createTasks = () => {
 
   return {
     subscribe,
+    setTasks: (newTasks) => {
+      set(newTasks);
+      localStorage.setItem('tasks', JSON.stringify(newTasks));
+    },
     addTask: (task) => {
       update((tasks) => {
         const newTasks = [...tasks, task];

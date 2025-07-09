@@ -11,11 +11,11 @@
   }
 </script>
 
-<div class="p-3 my-2 bg-white rounded-lg shadow">
-  <div class="font-bold">{timeBlock.description}</div>
+<div class="p-4 my-2 bg-white/80 rounded-lg shadow-md backdrop-blur-md">
+  <div class="font-bold text-gray-800">{timeBlock.description}</div>
   <div class="text-sm text-gray-600">{timeBlock.notes}</div>
-  <div class="text-sm text-gray-800">
+  <div class="mt-2 text-sm text-gray-800">
     {new Date(timeBlock.startTime).toLocaleTimeString()} - {new Date(timeBlock.endTime).toLocaleTimeString()}
-    <span class="ml-4 font-bold">{calculateDuration(timeBlock.startTime, timeBlock.endTime)}</span>
+    <span class="ml-4 font-bold text-blue-500">{calculateDuration(timeBlock.startTime, timeBlock.endTime)}</span>
   </div>
 </div>
