@@ -12,6 +12,15 @@ const createTimeBlocks = () => {
         return newTimeBlocks;
       });
     },
+    updateTimeBlock: (updatedTimeBlock) => {
+      update((timeBlocks) => {
+        const newTimeBlocks = timeBlocks.map((block) =>
+          block.id === updatedTimeBlock.id ? updatedTimeBlock : block
+        );
+        localStorage.setItem('timeBlocks', JSON.stringify(newTimeBlocks));
+        return newTimeBlocks;
+      });
+    },
     clearTimeBlocks: () => {
       set([]);
       localStorage.removeItem('timeBlocks');

@@ -28,7 +28,8 @@
           minutes--;
           seconds = 59;
         }
-      } else {
+      }
+      else {
         seconds--;
       }
     }, 1000);
@@ -74,10 +75,53 @@
   });
 
   $: formattedTime = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+
+  $: totalSecondsInSession = (() => {
+    if (sessionType === 'work') return workTime * 60;
+    if (sessionType === 'shortBreak') return shortBreakTime * 60;
+    if (sessionType === 'longBreak') return longBreakTime * 60;
+    return 0;
+  })();
+
+  $: remainingSecondsInSession = minutes * 60 + seconds;
+  $: progress = totalSecondsInSession > 0 ? (remainingSecondsInSession / totalSecondsInSession) : 0;
+
+  const radius = 90;
+  const circumference = 2 * Math.PI * radius;
+  $: strokeDashoffset = circumference * (1 - progress);
 </script>
 
-<div class="text-center p-6 bg-white/80 rounded-lg shadow-lg backdrop-blur-md">
-  <div class="text-6xl font-bold mb-4">{formattedTime}</div>
+<div class="text-center p-6 bg-white/80 rounded-lg shadow-lg backdrop-blur-md flex flex-col items-center">
+  <div class="relative w-48 h-48 mb-4">
+    <svg class="w-full h-full" viewBox="0 0 200 200">
+      <circle
+        class="text-gray-300"
+        stroke-width="10"
+        stroke="currentColor"
+        fill="transparent"
+        r="{radius}"
+        cx="100"
+        cy="100"
+      />
+      <circle
+        class="text-blue-500 transition-all duration-1000 ease-linear"
+        stroke-width="10"
+        stroke-dasharray="{circumference}"
+        stroke-dashoffset="{strokeDashoffset}"
+        stroke-linecap="round"
+        stroke="currentColor"
+        fill="transparent"
+        r="{radius}"
+        cx="100"
+        cy="100"
+        transform="rotate(-90 100 100)"
+      />
+    </svg>
+    <div class="absolute inset-0 flex items-center justify-center">
+      <div class="text-5xl font-bold text-gray-800">{formattedTime}</div>
+    </div>
+  </div>
+
   <div class="mb-4 text-lg font-semibold">
     {#if sessionType === 'work'}
       <span>Work Session</span>
