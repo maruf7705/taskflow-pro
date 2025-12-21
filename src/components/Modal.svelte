@@ -1,21 +1,74 @@
 <script>
   import { createEventDispatcher } from 'svelte';
-
+  import { fade, scale } from 'svelte/transition';
+  
   const dispatch = createEventDispatcher();
 
-  function closeModal() {
+  function close() {
     dispatch('close');
   }
 </script>
 
-<div class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30 backdrop-blur-sm">
-  <div class="w-full max-w-md p-6 bg-white/70 border border-gray-200 rounded-lg shadow-lg backdrop-blur-lg">
-    <div class="flex items-center justify-between mb-4">
-      <h2 class="text-2xl font-bold text-gray-800"><slot name="header">Modal Title</slot></h2>
-      <button on:click={closeModal} class="text-gray-600 hover:text-gray-900">&times;</button>
+<div class="modal-backdrop" on:click={close} transition:fade={{ duration: 200 }}>
+  <div class="modal-content glass-strong" on:click|stopPropagation transition:scale={{ duration: 300, start: 0.9 }}>
+    <div class="modal-header">
+      <slot name="header" />
     </div>
-    <div>
+    <div class="modal-body">
       <slot />
     </div>
   </div>
 </div>
+
+<style>
+  .modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(167, 139, 250, 0.15);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: var(--space-md);
+  }
+
+  .modal-content {
+    max-width: 500px;
+    width: 100%;
+    border-radius: var(--radius-lg);
+    padding: var(--space-xl);
+    box-shadow: var(--shadow-xl);
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+
+  .modal-header {
+    margin-bottom: var(--space-lg);
+  }
+
+  .modal-header :global(h2) {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #2a2a3e;
+    margin: 0;
+  }
+
+  .modal-body {
+    color: #4a4a68;
+  }
+
+  /* Custom scrollbar for modal */
+  .modal-content::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .modal-content::-webkit-scrollbar-thumb {
+    background: var(--glass-bg-strong);
+    border-radius: var(--radius-full);
+  }
+</style>
